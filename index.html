@@ -4,13 +4,15 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Remote Vis</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/black.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<link rel='shortcut icon' type='image/x-icon' href="favicon.ico" />
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -20,12 +22,1608 @@
 			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
 			document.getElementsByTagName( 'head' )[0].appendChild( link );
 		</script>
+
+	<script>
+		(function(d,ua){
+			if ((ua.indexOf('chrome') > -1) || (ua.indexOf('safari') > -1 && ua.indexOf("mobile") === -1)) {
+				d.className += " supported ";
+			}
+		})(document.documentElement, navigator.userAgent.toLowerCase());
+	</script>
+
+	<link href="http://fonts.googleapis.com/css?family=Ubuntu:700|Ubuntu+Mono|Crimson+Text:400,700,400italic" rel="stylesheet" />
+	<link href="css/style.css" rel="stylesheet" />
+	<script src="js/prefixfree.js"></script>
+
+
+	<!-- demo code -->
+	<script type="text/javascript">
+		var remote_vis_url = "http://pawsey.org.au";
+	</script>
+
+
+	<!-- Panorama Viewer -->
+	<script src="pannellum/pannellum.js"></script>
+    <link rel="stylesheet" href="pannellum/pannellum.css">
+
 	</head>
 	<body>
 		<div class="reveal">
+			<div style="position: absolute; top: 0; right: -78px; width: 50%;">
+				<img src="images/Picture1.png">
+			</div>
+			<footer style="position: absolute; bottom: 20px; left: 80px; width: 25%;">
+				<!--<a href="www.pawsey.org.au" data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>-->
+				<img src="images/pawsey_horizontal.png" style="width:45%"/>
+			</footer>
+			<p style="position: fixed; bottom: 0; left: 40%; font-size: 30px;font-family:courier;">vis.pawsey.org.au</p>
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+
+
+			<!--beginning of slides-->
+
+			<!--title slide-->
+			<!--
+			<section data-background="#3E3E3E">
+				<img src="images/pawsey_logo.png" style="background:none; border:none; box-shadow:none;"/>
+				<h1>Visualisation</h1>
+				<h2>July 2018</h2>
+				<p>Yathu Sivarajah</p>
+				<p></p>
+				<img class="plain"  src="images/partner_logo.png" width=80%/>
+				<aside class="notes">
+				</aside>
+			</section>
+			-->
+			<!-- Start of "Title slide with animation" -->
+			<section data-background="#222" width=80% style="align-content: center">
+				<div id="title" class="step" style="margin: auto">
+					<h1>
+						<span class="css" style="font-family: 'Crimson Text', georgia, times, serif;  line-height: 0"><span class="d3"><img src="images/pawsey_logo.png" style="background:none; border:none; box-shadow:none;" width=55%/></span></span>
+						<span class="transforms" style="font-family: 'Crimson Text', georgia, times, serif;  line-height: 1.0;position:  relative; right: 0px; color:#318293; font-size: .3em" font-smoothing: antialiased;> Remote visualisation</span>
+						<!-- <span class="short" style="font-family: 'Crimson Text', georgia, times, serif;  line-height: 1.5;color: #E9362B">Dr Yathu Sivarajah</span> -->
+						<!-- <span class="short" style="font-family: 'Crimson Text', georgia, times, serif;  line-height: 1.5;color: #318293">Remote Visualisation</span> -->
+					</h1> 
+					
+				</div>
+				<!--	<h2 style="font-family: 'Crimson Text', georgia, times, serif;  line-height: 2.0;color: #E9362B">Yathu Sivarajah, Deva Deeptimahanti and Ali Zamani</h2> -->
+				<img class="plain"  style="margin: 1px 1px 1px 1px" src="images/partner_logo.png" width=60%/>
+				<p style="font-family:courier;">bit.ly/remotevis</p>
+			</section>
+			<!-- End of "Title Slide with animation" -->
+
+			<!-- Column 01 -->
+			<!-- 1.0 overview slide>-->
+			<section>
+				<h2 style="font-size: 3em">Overview</h2>
+				<ul style="font-size: 2em">
+					<li>Visualisation and remote visualisation</li>
+					<li>Remote visualisation facility at Pawsey</li>
+					<li>Visualising using ParaView</li>
+					<!-- <ul style="font-size: .75em">
+						<li>Standalone</li>
+						<li>Client-Server</li>
+						<ul style="font-size: .8em">
+							<li>Client and severs on the same node</li>
+							<li>Client on remote visualisation node and servers on workq nodes</li>
+						</ul>
+					</ul> -->
+				</ul>
+				<aside class="notes">
+				</aside>
+			</section>
+
+			<!-- Column 02-->
+			<!-- Remote Visualisation -->
+			<section>
+				<!-- 2.0 Visualisation and Remote Visualisation-->
+				<section style="font-size: 2em">
+					<h2>Visualisation and Remote Visualisation</h2>
+				</section>
+
+				<!-- 2.1 -->
+				<section style="font-size: 1.5em">
+					<h2>Visualisation</h2>
+					<ul>
+						<li>Visualisation offers a <span class="bolded">“method for seeing the unseen”</span></li>
+						<li>Aim is to improve understanding by compressing volumes of data</li>
+						<ul>
+							<li>Don't visualise without thinking</li>
+							<li>It's not data mining, which doesn’t care about the meaning of the data</li>
+						</ul>
+						<li>With the increasing simulation data, visualisation has become mandatory to exploit the high level of detail available in such large data sets</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+				
+				<!-- 2.2 -->
+				<section >
+					<h2>Why do We Need to Visualise?</h2>
+					<p>“Purpose of computing is <span class="bolded">insight</span>, not numbers” Richard Hamming (1962)</p>
+					<video width="1280" height="720" controls>
+					  <source src="videos/why.mp4" type="video/mp4">
+					Your browser does not support the video tag.
+					</video>
+					<!--<img class"plain" src="images/whyviusalise.png"/>-->
+					<p>“Computing, and in particular supercomputing, <span class="bolded">without visualisation</span>, is like assembling a jigsaw puzzle in the dark” Richard Weinberg (1988)</p>
+					<aside class="notes">
+						<ul>
+							<li>Insights is to recognize relationships and formulate the right question</li>
+							<li>When printed, the hemoglobin PDB (program database) file outputs 92 pages of (boring) atomic coordinates, but we can see indirectly through images</li>
+							<li>Sometimes it is very hard to explain things to non-scientific background people without good visualisation</li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 2.3 -->
+				<section style="font-size: 1.5em">
+					<h2>Remote Visualisation</h2>
+					<video width="1280" height="720" controls>
+					  <source src="videos/how.mp4" type="video/mp4">
+					Your browser does not support the video tag.
+					</video><ul>
+						</ul>
+					<aside class="notes">
+						<ul>
+							<li>Plays an important role in visualising large simulation data sets</li>
+							<li>No Download and Visualise</li>
+							<ul>
+								<li>No need to transfer large data</li>
+								<li>Quickly modify workflows/jobs</li>
+							</ul>
+							<li>Specialised HPC servers with dedicated large-memory (RAM) and GPU nodes at major supercomputing centres</li>
+							<li>No need to transfer large data from the supercomputers to your local machines</li>
+							<li>allows users to quickly modify their workflows/jobs without wasting time and compute resources</li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+
+			<!-- Column 03 -->
+			<!--remote visualisation conventional-->
+			<section>
+				<!-- 3.0 -->
+				<section style="font-size: 2em">
+					<h2>Remote Visualisation (Conventional, but Obsolete)</h2>
+				</section>
+
+				<!-- 3.1 -->
+				<section style="font-size: 1.25em">
+					<h2>X11 Forwarding</h2>
+					<ul>
+						<img class"plain" src="images/x11.png" style="float:right" width=20%/>
+						<li>Version 11 of the X window system - X11</li>
+						<li>X Server runs on the local machine</li>
+						<li>X11 forwarding forwards the X11 packets from the remote machine to your local screen</li>
+						<li>The server accepts requests for graphical output (windows) and sends back user input (from keyboard, mouse, or touch screen)</li>
+						<li>X11 packets can be forwarded through SSH (secure shell)</li>
+						<li>Any X11 programs started will then go through an encrypted channel</li>
+						<ul>
+							<li>Enabling X11 forwarding: <em style="color: #00a1ff;">ssh <span class="bolded">-X</span> couXYZ@zeus.pawsey.org.au</em></li>
+						</ul>
+					</ul>
+					<aside class="notes">
+						<p>VNC typically uses fewer round-trips than X, particularly as an application starts up. Your link is quite high bandwidth, but if the latency is high, you may find things appear more quickly if you use VNC than if you use X.
+
+								X, however, generally requires much less bandwidth once the application is up and running. This is because it makes more use of resources at the terminal (fonts, cursors, etc). With VNC these are all rendered at the server and copied over the network. So X will often be faster, but VNC works across more platforms and is less dependent on the facilities at the terminal.
+								
+								X applications will die when the connection is broken, whereas a VNC viewer can disconnect and reconnect as many times as it likes and the applications keep running. This is particularly useful if you have long-running apps, or if you wish to connect from more than one place.
+								
+								People seem to be forgetting one of the more important factors - normally when you run an X server (such as XWin32 for Windoze) the heavy memory usage is at the user's end. The applications you start on the server and that connect to your X server are relatively light-weight. With VNC you reverse that role again, not only will you most likely run your apps on your server, but also the X server itself will then be on that server. With a few users running (VNC) X servers memory usage could be significant.
+								
+								Previously I used XWin32 at work, but everytime the machine (or just XWin32) crashed I would lose all my sessions. Also, XWin32 can be quite heavy for your PC - depends a bit on how much memory you have and all that. Nowadays (ever since I learned of VNC) I and several colleagues run VNC X servers on our admin server and connect there with the VNC clients. With SSH and port forwarding we're also able to pick up our sessions from home (mostly through dial-up ISDN, usable but not fast) as well.
+								
+								I also use VNC at home to access the VNC server on my Linux box. Speed is good (would be better even with 100Mbit ethernet instead of 10Mbit) and again it doesn't matter whether my W98 box crashes, the server will stay up.
+								
+								I've used VNC a long time ago too when I first tested it over a 2Mbit connection, and I recall that as very usable. X connections over that connection are slow anyway. :) Your mileage may vary - what window manager and the like you use matters a lot too. The simpler the graphics the less data, etc. It can't be put as simple as you think.
+								</p>
+					</aside>
+				</section>
+
+				<!-- 3.2 -->
+				<section>
+					<h2>X11 Forwarding Cont.</h2>
+					<p>Mac and Linux users: Use terminal application</p>
+					<p>Windows users: We recommend using MobaXterm, where X11 forwarding is enabled by default</p>
+					<img class"plain" src="images/mobaxterm.png"/>
+					
+					<aside class="notes">
+						<ul>
+							<li>Under Session, enter the hostname you want to connect to: pawsey.org.au on port 22. Make sure the connection type is ssh.</li>
+							<li>Next, scroll to Connection > SSH > X11. Check the box next to Enable X11 Forwarding. </li>
+							<li>By default the X Display location is empty. You can enter localhost:0. The remote authentication should be set to MIT-Magic-Cookie-1</li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 3.3 -->
+				<section>
+					<h2>X11 Forwarding Cont.</h2>
+					<pre> <code>ssh -X couXYZ@zeus.pawsey.org.au</code></pre>
+
+					<pre> <code>xclock</code></pre>
+
+					<img class"plain" src="images/xclock.png"width=10%/>
+
+					<pre> <code>module load mesa </code></pre>
+					<pre> <code>glxgears</code></pre>
+					
+					<img class"plain" src="images/fps.png"width=36%/>
+					<img class"plain" src="images/glxgears.png"width=18%/>
+
+					<aside class="notes">
+						<ul>
+							<li>Error: no display specified</li>
+							<li>Mac users install xquartz
+								</li>
+							<li>Windows users install xming
+								</li>
+						</ul>
+					</aside>
+				</section>
+				<!--
+					
+				<section>
+					<h2>X11 forwarding Cont.</h2>
+					<pre> <code>ssh -X couXYZ@zeus.pawsey.org.au</code></pre>
+
+					<pre> <code>xclock</code></pre>
+					<img class"plain" src="images/xclock.png"width=10%/>
+					<pre> <code>glxgears</code></pre>
+					<img class"plain" src="images/fps.png"width=40%/>
+					<img class"plain" src="images/glxgears.png"width=20%/>
+					
+					<aside class="notes">
+						<ul>
+							<li>Error: no display specified</li>
+							<li>Mac users install xquartz
+								</li>
+							<li>Windows users install xming
+								</li>
+						</ul>
+					</aside>
+				</section>
+				-->
+
+				<!-- 3.4 -->
+				<section style="font-size: 1.5em">
+					<h2>X11 Forwarding Limitations</h2>
+					<ul>
+						<li>Remote visualisation using X11 forwarding runs on the login node, which is shared among all Zeus users</li>
+						<li>Runs on a single core and does not make use of the remaining cores and the “GPU card”</li>
+						<li>Very slow compared to other modern remote visualisation techniques (eg. Virtual Network Computing  - VNC)</li>
+						<li>X11 forwarding will stop once your connection is broken</li>
+						<li>Poses security hazard when used in untrusted environment</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+
+			<!-- Column 04 -->
+			<!--remote visualisation recommended way-->
+			<section>
+				<!-- 4.0 -->
+				<section style="font-size: 2em">
+					<h2>Remote Visualisation (Recommended Way)</h2>
+				</section>
+
+				<!-- 4.1 -->
+				<section style="font-size: 1.25em">
+					<h2>Remote Visualisation Infrastructure at Pawsey</h2>
+					<img class"plain" src="images/zeus_table1.png" width=70%/>
+					<ul>
+						<li>Performed on Zeus - 20 nodes with GPU are dedicated</li>
+						<li>Shares the same file systems with other Pawsey supercomputers</li>
+						<ul>
+							<li>/home</li>
+							<li>/scratch</li>
+							<li>/group</li>
+						</ul>
+						<li>This avoids the need to copy simulation data across Magnus/Galaxy/Zeus</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li>27 nodes with two 8-core Intel Xeon E5-2670 CPUs 2.6GHZ</li>
+							<li>grep -i --color memory /var/log/Xorg.0.log – to find out available GPU memory</li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.2 -->
+				<section style="font-size: 1.25em">
+					<h2>Remote Visualisation at Pawsey</h2>
+					<ul>
+						<li>Performed using web technology</li>
+						<li>No need to install any application on client’s machine – OS independent</li>
+					</ul>
+					<br></br>
+					<video width="1280" height="720" controls>
+					  <source src="videos/remotevis.mp4" type="video/mp4">
+					Your browser does not support the video tag.
+					</video>
+					<!--<img class"plain" src="images/diagram.png" width=70%/>-->
+					<aside class="notes">
+						<ul>
+							<li>Creates interactive desktop sessions on HPC systems</li>
+							<li>It launches a remote desktop instance by programmatically requesting a compute node on Zeus</li>
+							<li>There are clients available for popular operating systems</li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.3 -->
+				<section>
+					<h2>Web-based Remote Visualisation</h2>
+					<p>Open your preferred browser (e.g. Chrome, Firefox) and goto: <br><em style="color: #00a1ff;">https://remotevis.pawsey.org.au</em></p>
+					<img class"plain" src="images/1.png" width=70%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.4 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/2.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.5 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/3.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.6 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/4.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.7 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/5.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.8 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/10.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.9 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/11.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.10 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/12.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.11 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/15-1.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.12 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/15-2.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.13 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/15-3.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.14 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/14.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.15 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/13.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.16 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/16.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.17 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/17.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.18 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/18.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.19 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/19.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.20 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/20.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.21 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/21.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.22 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/8-1.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.23 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/8-2.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.24 -->
+				<section>
+					<h2>Web-based Remote Visualisation Cont.</h2>
+					<img class"plain" src="images/9.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.25 -->
+				<section>
+					<h2>Web-based Remote Visualisation</h2>
+					Right click on the desktop and click "xterm"
+					<pre style="width: 50%;font-size: 1.2em; text-align: center;position: relative; height: 100px; top: -120px;"> 
+						<code data-trim>
+							module load virtualgl
+							vglrun glxspheres64
+						</code>
+					</pre>
+					
+					<img class"plain" src="images/glxspheres.png" width=65%/>
+					<!-- demo button -->
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 4.26 -->
+				<section style="font-size: 1.5em">
+					<h2>Remote Visualisation at Pawsey</h2>
+					<pre style="text-align: center;"> <code>module load virtualgl </code></pre>
+					<pre style="text-align: center;"> <code>vglrun glxgears</code></pre>
+					<img class"plain" src="images/comparison.png" width=44%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+				
+				<!-- 4.27 -->
+				<section style="font-size: 1.5em">
+					<h2>Comparison</h2>
+					<img class"plain" src="images/fps.png"width=36%/>
+					<img class"plain" src="images/glxgears.png"width=18%/>
+					<img class"plain" src="images/comparison.png" width=44%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+
+			<!-- Column 05 -->
+			<!--visualising using paraview-->
+			<section>
+				<section style="font-size: 2em">
+					<h2>Visualising Using ParaView</h2>
+					<img class"plain" style="background: none; border: none; box-shadow: none;" src="images/paraview (1)11.png"/>
+				</section>
+
+				<section style="font-size: 1.8em">
+					<h2>ParaView</h2>
+					<ul>
+						<li>ParaView is an open-source, cross-platform data analysis and visualisation application</li>
+						<li>Has a user-friendly interface built on top of the Visualisation ToolKit (VTK) library</li>
+						<li>An extensible, modular architecture based on open standards</li>
+						<li>Mainly used to analyse large datasets (petascale size) using distributed-memory computing resources</li>
+						<li>Supports a wide range of data formats</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<section>
+					<h2>Supported Data Types</h2>
+					<img class"plain" src="images/data_types.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<section>
+					<h2>ParaView Interface</h2>
+					<img class"plain" src="images/paraview_interface.png"/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+							
+				<section>
+					<h2>Common Filters</h2>
+					<img class"plain" src="images/common_filters.png"/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+
+			<!-- Column 06 -->
+			<!---hands on session Paraview-->
+			<section>
+				<!-- 6.0 -->
+				<section style="font-size: 2em">
+					<h2>Hands On Session - ParaView</h2>
+				</section>
+
+				<!-- 6.1 -->
+				<section style="font-size: 2em">
+					<h2>Launching ParaView in<br>Stand-alone Mode</h2>
+					<ul>
+						<li>Start web-based remote visualisation on Zeus</li>
+						<li>Launch ParaView in stand-alone mode using the following commands:</li>
+						<pre style="width: 60%;text-align: center;"> 
+							<code data-trim>
+								module load virtualgl paraview
+								vglrun paraview
+							</code>
+						</pre>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+					
+				<!-- 6.2 -->	
+				<section>
+					<h2>Launching ParaView Cont.</h2>
+					<img class"plain" src="images/00.png" width="65%"/>
+					<!-- demo button -->
+					<script>
+							document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+					
+				<!-- 6.3 -->	
+				<section style="font-size: 1.25em">
+					<h2>Data</h2>
+					Simulation of the flow of air around a heated and spinning disk
+					<img class"plain" src="images/heated_spinning_disk.png" width="30%"/>
+					<!--<li>SSH into Zeus from your local terminal</li>
+					<pre style="width: 38%;"> 
+						<code data-trim>ssh couXYZ@zeus.pawsey.org.au</code>
+					</pre>
+					<li>Make a copy of this dataset into your scratch directory</li>
+					<pre>
+						<code data-trim>
+							cp /group/courses01/Remote_Vis/paraview/disk_out_ref.ex2 $MYSCRATCH
+							$MYSCRATCH is: /scratch/courses01/couXYZ
+						</code>
+					</pre>
+					-->
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 6.4 -->
+				<section>
+					<h2>Open Data</h2>
+					/scratch/courses01/remote_vis/paraview/disk_out_ref.ex2
+					<img class"plain" src="images/01.png" width="65%"/>
+					<!-- demo button -->
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 6.5 -->
+				<section>
+					<h2>Load All Variables</h2>
+					<img class"plain" src="images/02.png" width="65%"/>
+					<!-- demo button -->
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 6.6 -->
+				<section>
+					<h2>Add Stream Tracer</h2>
+					<img class"plain" src="images/03.png" width="65%"/>
+					<!-- demo button -->
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 6.7 -->
+				<section>
+					<h2>Add Stream Tracer cont.</h2>
+					<img class"plain" src="images/04.png" width="65%"/>
+					<!-- demo button -->
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 6.8 -->
+				<section>
+					<h2>Open Quick Launch</h2>
+					<img class"plain" src="images/05.png" width="65%"/>
+					<!-- demo button -->
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 6.9 -->
+				<section>
+					<h2>Add Tube Filter</h2>
+					<img class"plain" src="images/06.png" width="65%"/>
+					<!-- demo button -->
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 6.10 -->
+				<section>
+					<h2>Add Tube Filter Cont.</h2>
+					<img class"plain" src="images/07.png" width="65%"/>
+					<!-- demo button -->
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 6.11 -->
+				<section>
+					<h2>Add Glyph Filter</h2>
+					<img class"plain" src="images/08.png" width="65%"/>
+					<!-- demo button -->
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 6.12 -->
+				<section>
+					<h2>Configure Glyph Filter Properties</h2>
+					<img class"plain" src="images/09.png" width="65%"/>
+					<!-- demo button -->
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 6.13 -->
+				<section>
+					<h2>Configure Glyph Colouring</h2>
+					<img class"plain" src="images/010.png" width="65%"/>
+					<!-- demo button -->
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 6.14 -->
+				<section>
+					<h2>Visualisation</h2>
+					<img class"plain" src="images/012.png" width="65%"/>
+					<!-- demo button -->
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 6.15 -->
+				<section>
+					<h2>Visualisation</h2>
+					<img class"plain" src="images/013.png" width="65%"/>
+					<!-- demo button -->
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 6.16 -->
+				<section>
+					<h2></h2>
+					<img class"plain" src="images/paraview13.png" width=70%/>
+					<aside class="notes">
+						<ol>
+							<li>volume rendering - colour coded temp</li>
+							<li>arrow glyphs - colour coded temp</li>
+							<li>tube filter - colour coded temp</li>
+							<li>composit of 1st and 2nd </li>
+							<li>conture - colour coded pressure</li>
+							<li>composit of multiple visualisation</li>
+						</ol>
+					</aside>
+				</section>
+			</section>
+
+			<!-- Column 07 -->
+			<!--Pparaview in parallel - Theory-->
+			<section>
+				<!-- 7.0 -->
+				<section style="font-size: 2em">
+					<h2>ParaView in Parallel - Client/Server Mode</h2>
+				</section>
+
+				<!-- 7.1 -->
+				<section style="font-size: 1.75em">
+					<h2>Client/Server Mode</h2>
+					<ul>
+						<li>To visualise large datasets, ParaView comes with the ability to run ParaView across multiple nodes using the distributed-memory paradigm</li>
+						<li>We recommend to run the client on one node - make use of the graphics card on the corresponding node to visualise quickly at the front-end</li>
+						<li>The ParaView servers run on other compute node(s) -The data communication is very fast, as the nodes are connected by an Infiniband cable (56Gb/s signaling rate)</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 7.2 -->
+				<section style="font-size: 2em">
+					<h2>Client/Server Mode</h2>
+					<img class"plain" src="images/paravew_parallel.png"width=70%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 7.3 -->
+				<section style="font-size: 2em">
+					<h2>Launching ParaView Servers</h2>
+					<ul>
+						<li>Localhost - Within the same node </li>
+						<li>Zeus - On Another Zeus Partition</li>
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+			</section>
+			
+			<!-- Column 08 -->
+			<!-- ParaView servers on localhost -->
+			<section>
+				<!-- 8.0 -->
+				<section style="font-size: 2em">
+					<h2>ParaView Servers on Localhost - Within the Same Node</h2>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+	
+
+				<!-- 8.1 -->
+				<section style="font-size: 1.75em">
+					<h2>Open ParaView</h2>
+					<img class"plain" src="images/7-3.png" style="align-content: center" width=65%/>
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 8.2 -->
+				<section style="font-size: 1.75em">
+					<h2>ParaView Servers on Localhost</h2>
+					<img class"plain" src="images/7-4.png" style="align-content: center" width=65%/>
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 8.3 -->
+				<section style="font-size: 1.75em">
+					<h2>ParaView Servers on Localhost</h2>
+					<img class"plain" src="images/7-5.png" style="align-content: center" width=65%/>
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>	
+				
+				<!-- 8.4 -->
+				<section style="font-size: 1.75em">
+					<h2>ParaView Servers on Localhost</h2>
+					<img class"plain" src="images/7-6.png" style="align-content: center" width=65%/>
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>					
+
+				<!-- 8.5 -->
+				<section style="font-size: 1.75em">
+					<h2>ParaView Servers on Localhost</h2>
+					<img class"plain" src="images/7-7.png" style="align-content: center" width=65%/>
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>	
+			</section>
+
+			<!-- Column 09 -->
+			<!-- ParaView servers on Zeus -->
+			<section>
+
+				<!-- 9.0 -->
+				<section style="font-size: 2em">
+					<h2>ParaView Servers on Zeus</h2>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 9.1 -->
+				<section style="font-size: 1.75em">
+					<h2>ParaView Servers on Zeus</h2>
+					<img class"plain" src="images/7-8.png" style="align-content: center" width=65%/>
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>	
+
+				<!-- 9.2 -->
+				<section style="font-size: 1.75em">
+					<h2>ParaView Servers on Zeus</h2>
+					<img class"plain" src="images/7-9.png" style="align-content: center" width=65%/>
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>	
+
+				<!-- 9.3 -->
+				<section style="font-size: 1.75em">
+					<h2>ParaView Servers on Zeus</h2>
+					<img class"plain" src="images/7-10.png" style="align-content: center" width=65%/>
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>	
+
+				<!-- 9.4 -->
+				<section style="font-size: 1.75em">
+					<h2>ParaView Servers on Zeus</h2>
+					<img class"plain" src="images/7-11.png" style="align-content: center" width=65%/>
+					<script>
+						document.write('<a href="' + remote_vis_url + '"data-preview-link style="background: none"><img src="images/button.png" height="50" width="50" style="border: none; background: none"></a>');
+					</script>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>	
+
+				<!-- 9.5 -->
+				<section style="font-size: 1.75em">
+					<h2>ParaView Servers on Zeus</h2>
+					<p>Open a terminal (MobaXterm if Windows) on your laptop</p>
+					<pre style="width: 60%;text-align: center;"> 
+						<code data-trim>
+							ssh couxyz@zeus.pawsey.org.au
+						</code>
+						<code data-trim>
+							squeue -u $USER
+						</code>
+					</pre>
+					<img class"plain" src="images/7-12.png" style="align-content: center" width=65%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>	
+
+				<!-- 9.6 -->
+				<section style="font-size: 1.75em">
+					<h2>ParaView Servers on Zeus</h2>
+					<img class"plain" src="images/7-14.png" style="align-content: center" width=65%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>	
+
+				<!-- 9.7 -->
+				<section style="font-size: 1.75em">
+					<h2>ParaView Servers on Zeus</h2>
+					<pre style="width: 60%;text-align: center;"> 
+						<code data-trim>
+							squeue -u $USER
+						</code>
+					</pre>
+					<img class"plain" src="images/7-13.png" style="align-content: center" width=65%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 9.8 -->
+				<section style="font-size: 1.75em">
+					<h2>For Efficient Parallel Rendering</h2>
+					<p>Open "Settings" dialog box (Edit -> Settings)</p>
+					<img class"plain" src="images/9-8.png" style="align-content: center" width=65%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 9.9 -->
+				<section style="font-size: 1.5em">
+					<h2>For Efficient Parallel Rendering Cont.</h2>
+					<p> “Render View” tab => “Remote/Parallel Rendering Options” => Set “Remote Render threshold” to 0 (Mbytes)</p>
+					<img class"plain" src="images/9-10.png" style="align-content: center" width=65%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+			</section>
+
+			<!-- Column 10 -->
+			<!--large-scle data visualisation-->
+			<section>
+				<!-- 10.0 -->
+				<section style="font-size: 2em">
+					<h2>Large dataset in<br>Client-Server Mode</h2>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 10.1 -->
+				<section style="font-size: 1.8em">
+					<h2>Data</h2>
+					<ul>
+						<img class"plain" src="images/dam_break.png" style="float: right;"/>
+						<li>Dataset – Dam break</li>
+						<li>Column of water behind a membrane</li>
+						<li>At t = 0s, membrane is removed, then; ➡️ column of water collapses<br>➡️  water impacts an obstacle<br>➡️ creates a complicated flow structure</li>
+					</ul>
+					
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 10.2 -->
+				<section>
+					<h2>Open Data</h2>
+					<p>/scratch/courses01/remote_vis/VTK/dbreak3d_vtutorial_..vtk</p>
+					<img class"plain" src="images/014.png" width=70%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 10.3 -->
+				<section>
+					<h2>Open Data Cont.</h2>
+					<img class"plain" src="images/015.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 10.4 -->
+				<section>
+					<h2>Open Data Cont.</h2>
+					<img class"plain" src="images/016.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 10.5 -->
+				<section>
+					<h2>Generate Movie</h2>
+					<img class"plain" src="images/017.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 10.6 -->
+				<section>
+					<h2>Generate Movie Cont.</h2>
+					<img class"plain" src="images/018.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 10.7 -->
+				<section>
+					<h2>Generate Movie Cont.</h2>
+					<img class"plain" src="images/019.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 10.8 -->
+				<section>
+					<h2>Generate Movie Cont.</h2>
+					<img class"plain" src="images/020.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 10.9 -->
+				<section>
+					<h2>Generate Movie Cont.</h2>
+					<img class"plain" src="images/021.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 10.10 -->
+				<section>
+					<h2>Generate Movie Cont.</h2>
+					<img class"plain" src="images/022.png" width=75%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+
+				<!-- 10.11 -->
+				<section>
+					<pre style="width: 80%;font-size: .8em; text-align: center;position: relative; height: 10px; top: -150px;"> 
+						<code data-trim>
+							scp couxyz@zeus.pawsey.org.au:/scratch/courses01/couxyz/FILE_NAME .
+						</code>
+					</pre>					
+					<video controls="controls" name="Dam Break" src="images/dam_break.mov" loop="true" width=70% autoplay></video>
+				</section>
+			</section>
+
+			<!-- Column 11 -->
+			<!--terminating parallel paraview-->
+			<section>
+				<!-- 11.0 -->
+				<section style="font-size: 2em">
+					<h2>Terminating Client-Server ParaView</h2>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>
+				<!-- 11.1 -->
+				<section style="font-size: 1.75em">
+					<h2>ParaView Servers on Zeus</h2>
+					<pre style="width: 60%;text-align: center;"> 
+						<code data-trim>
+							scancel job_id
+						</code>
+					</pre>
+					<img class"plain" src="images/7-15.png" style="align-content: center" width=65%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>	
+
+				<!-- 11.2 -->
+				<section style="font-size: 1.75em">
+					<h2>ParaView Servers on Zeus</h2>
+					<img class"plain" src="images/7-16.png" style="align-content: center" width=65%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>	
+
+				<!-- 11.3 -->
+				<section style="font-size: 1.75em">
+					<h2>ParaView Servers on Zeus</h2>
+					<img class"plain" src="images/7-17.png" style="align-content: center" width=65%/>
+					<aside class="notes">
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</aside>
+				</section>	
+			</section>	
+
+
+
+			<!--more information slide-->
+			<section style="font-size: 2em">
+				<h2>More Information and Help</h2>
+				<p style="color:green;">Visualisation Documentation:</p> <p>http://bit.ly/PawseyVisDoc<a href="https://support.pawsey.org.au/documentation/x/QgAc"></a></p>
+				<p style="color:green;"> Contact: </p> <p>visualisation@pawsey.org.au</p>
+				<p style="color:green;">Help: </p> <p>help@pawsey.org.au</p>
+				<aside class="notes">
+				</aside>
+			</section>
+
+			<!--thank you slide-->
+			<section style="font-size: 3em">
+				<h2>Thank You</h2>
+				<aside class="notes">
+				</aside>
+			</section>
+
+
 			</div>
 		</div>
 
@@ -37,13 +1635,106 @@
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+				width:1920,
+				height:1080,
+				margin:0.1,
+				history: true,
+				// Transition style
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+				// Transition speed
+				transitionSpeed: 'slow', // default/fast/slow
+
+
+				chart: {
+					defaults: { 
+						global: {
+							title: { fontColor: "#FFF" }, 
+						
+							tooltips: {
+								labels: { fontColor: "#FFF" },
+							},
+						}, 
+						legend: {
+								position: "bottom",
+								labels: { fontColor: "#FFF" , fontSize:40},
+							},
+						scale: { 
+							scaleLabel: { fontColor: "#FFF" }, 
+							gridLines: { color: "#FFF", zeroLineColor: "#FFF" }, 
+							ticks: { fontColor: "#FFF" }, 
+						} 
+					},
+					line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] }, 
+					bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+					pie: { backgroundColor: [ ["rgba(0,0,0,1)" , "rgba(220,20,20,1)", "rgba(20,220,20,1)", "rgba(220,220,20,1)", "rgba(20,20,220,1)"] ]},
+					radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]}, 
+				},
+
+				menu: { // Menu works best with font-awesome installed: sudo apt-get install fonts-font-awesome
+					themes: false,
+					transitions: false,
+					markers: true,
+					hideMissingTitles: true,
+					custom: [
+				            //{ title: 'Plugins', icon: '<i class="fa fa-external-link"></i>', src: 'toc.html' },
+				            { title: 'About', icon: '<i class="fa fa-info"></i>', src: 'about.html' }
+				        ]
+				},
+
+				spotlight: {
+					// size of the spotlight
+					size: 60,
+
+					// toggle spotlight by holding down the mouse key
+					toggleSpotlightOnMouseDown: false,
+
+					// choose the cursor when spotlight is on. Maybe "crosshair"?
+					presentingCursor: "none", 
+
+					// true: cursor is always "none" except when spotlight is on. 
+					presentingCursorOnlyVisibleWhenSpotlightVisible: true
+				},
+				keyboard: {	
+					// alternative to toggleSpotlightOnMouseDown: 
+					// toggle spotlight by pressing key 'c'
+					 67: function() { RevealSpotlight.toggleSpotlight() },
+
+					// enter/leave presentation mode by pressing key 'Windows Menu/Right'
+					//93: function() { 
+					//	RevealSpotlight.togglePresentationMode(); 
+
+					87 : function() { RevealChalkboard.toggleNotesCanvas() },	// toggle notes canvas when 'w' is pressed
+	    			66: function() { RevealChalkboard.toggleChalkboard() },	// toggle chalkboard when 'b' is pressed
+	    			46: function() { RevealChalkboard.clear() },	// clear chalkboard when 'DEL' is pressed
+	     			8: function() { RevealChalkboard.reset() },	// reset chalkboard data on current slide when 'BACKSPACE' is pressed
+	    			68: function() { RevealChalkboard.download() },	// downlad recorded chalkboard drawing when 'd' is pressed
+				},
+				chalkboard: { 
+				// optionally load pre-recorded chalkboard drawing from file
+				// src: "plugin/chalkboard/chalkboard.json",
+				},
+	
+				// Transition style for full page slide backgrounds
+				backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					//Chart dependencies 
+					{ src: 'reveal.js-plugins/chart/Chart.min.js' },				
+					{ src: 'reveal.js-plugins/chart/csv2chart.js' },
+					//Menu dependency			
+					{ src: 'reveal.js-plugins/menu/menu.js' },
+					//Spotight
+					{ src: 'plugin/spotlight/spotlight.js' },
+					{ src: 'reveal.js-plugins/chalkboard/chalkboard.js'},
 				]
 			});
 		</script>
+
+		<script src="js/impress.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+		<script src="js/script.js"></script>
 	</body>
 </html>

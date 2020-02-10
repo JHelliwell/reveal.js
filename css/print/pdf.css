@@ -9,12 +9,16 @@
 	-webkit-print-color-adjust: exact;
 }
 
+
 body {
 	margin: 0 auto !important;
 	border: 0;
 	padding: 0;
 	float: none !important;
 	overflow: visible;
+	/* added the following background colour for print slides */
+	background: #222;
+	background-color: #222; 
 }
 
 html {

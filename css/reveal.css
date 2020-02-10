@@ -1553,3 +1553,11 @@ body {
 
 .zoomed .reveal .roll span:after {
   visibility: hidden; }
+
+
+
+/************************* bolded arguments *************************/
+.bolded {
+  color: #ba4927;
+  font-weight: bold !important;
+}

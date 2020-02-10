@@ -145,7 +145,9 @@
 			hideAddressBar: true,
 
 			// Opens links in an iframe preview overlay
-			previewLinks: false,
+			// Add `data-preview-link` and `data-preview-link="false"` to customise each link
+			// individually
+			previewLinks: true,
 
 			// Exposes the reveal.js API through window.postMessage
 			postMessage: true,
